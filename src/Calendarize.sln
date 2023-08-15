@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34003.232
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendarize.API", "Calendarize.API\Calendarize.API.csproj", "{1A7DBCF8-56FB-4E76-996D-ABA5AE99485D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendarize.Infrastructure", "Calendarize.Infrastructure\Calendarize.Infrastructure.csproj", "{92A2CE91-9CCB-413E-8AE4-309EBAA08D15}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendarize.Core", "Calendarize.Core\Calendarize.Core.csproj", "{9F26D66C-B679-4264-84B4-CD3A9F1525E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendarize.Application", "Calendarize.Application\Calendarize.Application.csproj", "{5704CB43-0430-4223-A41A-1E787A34B96D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A7DBCF8-56FB-4E76-996D-ABA5AE99485D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A7DBCF8-56FB-4E76-996D-ABA5AE99485D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A7DBCF8-56FB-4E76-996D-ABA5AE99485D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A7DBCF8-56FB-4E76-996D-ABA5AE99485D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92A2CE91-9CCB-413E-8AE4-309EBAA08D15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92A2CE91-9CCB-413E-8AE4-309EBAA08D15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92A2CE91-9CCB-413E-8AE4-309EBAA08D15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92A2CE91-9CCB-413E-8AE4-309EBAA08D15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F26D66C-B679-4264-84B4-CD3A9F1525E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F26D66C-B679-4264-84B4-CD3A9F1525E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F26D66C-B679-4264-84B4-CD3A9F1525E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F26D66C-B679-4264-84B4-CD3A9F1525E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5704CB43-0430-4223-A41A-1E787A34B96D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5704CB43-0430-4223-A41A-1E787A34B96D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5704CB43-0430-4223-A41A-1E787A34B96D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5704CB43-0430-4223-A41A-1E787A34B96D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {75CA7613-165B-4658-A7DE-231A5ABC51E2}
+	EndGlobalSection
+EndGlobal
