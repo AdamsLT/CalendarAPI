@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace Calendarize.API.Controllers
 {
-    [ApiController]
     public class LocationController : BaseCalendarizeController
     {
         private readonly IMapper _mapper;
