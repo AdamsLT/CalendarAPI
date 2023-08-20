@@ -51,7 +51,6 @@ namespace Calendarize.API
             services.AddControllers();
 
             services.ConfigureSwagger();
-            services.AddFluentValidationAutoValidation();
             services.AddFluentValidationRulesToSwagger();
 
             services
