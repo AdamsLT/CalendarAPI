@@ -1,4 +1,6 @@
-﻿using Calendarize.Core.Dto;
+﻿using Calendarize.Core.Constants;
+using Calendarize.Core.Dto;
+using Calendarize.Core.Extensions;
 using Calendarize.Core.Services;
 using FluentValidation;
 
@@ -14,37 +16,41 @@ namespace Calendarize.API.Validation
             _userService = userService;
             _eventService = eventService;
 
-            RuleFor(x => x.EventId)
-                .NotEmpty()
-                .WithState(x => "invalidEventId");
-
             RuleFor(x => x.UserId)
                 .NotEmpty()
-                .WithState(x => "invalidUserId");
-
-            RuleFor(x => x.UserId)
-                .NotEmpty()
-                .Must(IsValidUser)
-                .WithMessage(x => $"'UserId' with value '{x.UserId}' not found")
-                .WithState(x => "notFoundUserId");
+                .Must(x => x.IsValidBsonObjectId())
+                    .WithMessage(x => $"'{nameof(RegistrationCreateDto.UserId)}' is not a valid Id format")
+                    .WithState(x => ValidationErrorStates.ValueInvalidFormat)
+                .DependentRules(() => {
+                    RuleFor(x => x.UserId)
+                        .Must(BeValidUser)
+                            .WithMessage(x => $"'{nameof(RegistrationCreateDto.UserId)}' with value {x.UserId} not found")
+                            .WithState(x => ValidationErrorStates.EntityNotFound);
+                });
 
             RuleFor(x => x.EventId)
                 .NotEmpty()
-                .Must(IsValidEvent)
-                .WithMessage(x => $"'EventId' with value '{x.EventId}' not found")
-                .WithState(x => "notFoundEventId");
+                .Must(x => x.IsValidBsonObjectId())
+                    .WithMessage(x => $"'{nameof(RegistrationCreateDto.EventId)}' is not a valid Id format")
+                    .WithState(x => ValidationErrorStates.ValueInvalidFormat)
+                .DependentRules(() => {
+                    RuleFor(x => x.EventId)
+                        .Must(BeValidEvent)
+                            .WithMessage(x => $"'{nameof(RegistrationCreateDto.EventId)}' with value {x.EventId} not found")
+                            .WithState(x => ValidationErrorStates.EntityNotFound);
+                });
         }
 
-        private bool IsValidEvent(string eventId)
+        private bool BeValidEvent(string eventId)
         {
-            var @event = _eventService.GetEventAsync(eventId).Result;
-            return !(@event is null);
+            var entity = _eventService.GetEventAsync(eventId).Result;
+            return entity is not null;
         }
 
-        private bool IsValidUser(string userId)
+        private bool BeValidUser(string userId)
         {
-            var user = _userService.GetUserAsync(userId).Result;
-            return !(user is null);
+            var entity = _userService.GetUserAsync(userId).Result;
+            return entity is not null;
         }
     }
 }

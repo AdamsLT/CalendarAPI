@@ -1,6 +1,5 @@
 using Calendarize.API.Capabilities;
 using Calendarize.API.Middlewares;
-using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -51,7 +50,6 @@ namespace Calendarize.API
             services.AddControllers();
 
             services.ConfigureSwagger();
-            services.AddFluentValidationAutoValidation();
             services.AddFluentValidationRulesToSwagger();
 
             services

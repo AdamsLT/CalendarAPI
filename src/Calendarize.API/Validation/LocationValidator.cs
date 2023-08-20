@@ -1,4 +1,5 @@
-﻿using Calendarize.Core.Dto;
+﻿using Calendarize.Core.Constants;
+using Calendarize.Core.Dto;
 using FluentValidation;
 
 namespace Calendarize.API.Validation
@@ -9,33 +10,43 @@ namespace Calendarize.API.Validation
         {
             RuleFor(x => x.Latitude)
                 .NotEmpty()
-                .InclusiveBetween(-90, 90)
-                .PrecisionScale(9, 7, ignoreTrailingZeros:false)
-                .WithState(x => "invalidLatitudeValue");
+                    .WithState(x => ValidationErrorStates.Required)
+                .InclusiveBetween(ValidationConstants.Location.MinLatitudeValue, ValidationConstants.Location.MaxLatitudeValue)
+                    .WithState(x => ValidationErrorStates.ValueOutOfBounds)
+                .PrecisionScale(ValidationConstants.Location.LatitudePrecision, ValidationConstants.Location.LatitudeScale, ignoreTrailingZeros:false)
+                    .WithState(x => ValidationErrorStates.ValueInvalidFormat);
 
             RuleFor(x => x.Longtitude)
                 .NotEmpty()
-                .InclusiveBetween(-180, 180)
-                .PrecisionScale(10, 7, ignoreTrailingZeros:false)
-                .WithState(x => "invalidLongtitudeValue");
+                    .WithState(x => ValidationErrorStates.Required)
+                .InclusiveBetween(ValidationConstants.Location.MinLongtitudeValue, ValidationConstants.Location.MaxLongtitudeValue)
+                    .WithState(x => ValidationErrorStates.ValueOutOfBounds)
+                .PrecisionScale(ValidationConstants.Location.LongtitudePrecision, ValidationConstants.Location.LongtitudeScale, ignoreTrailingZeros:false)
+                    .WithState(x => ValidationErrorStates.ValueInvalidFormat);
 
             RuleFor(x => x.Address)
                 .NotEmpty()
-                .MinimumLength(5)
-                .MaximumLength(50)
-                .WithState(x => "invalidAddressLength");
+                    .WithState(x => ValidationErrorStates.ValueEmpty)
+                .MinimumLength(ValidationConstants.Location.MinAddressLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength)
+                .MaximumLength(ValidationConstants.Location.MaxAddressLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength);
 
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .MinimumLength(5)
-                .MaximumLength(50)
-                .WithState(x => "invalidNameLength");
+                    .WithState(x => ValidationErrorStates.ValueEmpty)
+                .MinimumLength(ValidationConstants.Location.MinNameLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength)
+                .MaximumLength(ValidationConstants.Location.MaxNameLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength);
 
             RuleFor(x => x.City)
                 .NotEmpty()
-                .MinimumLength(5)
-                .MaximumLength(50)
-                .WithState(x => "invalidCityLength");
+                    .WithState(x => ValidationErrorStates.ValueEmpty)
+                .MinimumLength(ValidationConstants.Location.MinCityLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength)
+                .MaximumLength(ValidationConstants.Location.MaxCityLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength);
         }
     }
 }

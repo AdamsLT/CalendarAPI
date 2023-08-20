@@ -2,6 +2,7 @@
 
 namespace Calendarize.API.Controllers
 {
+    [ApiController]
     [Produces("application/json")]
     [Consumes("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]

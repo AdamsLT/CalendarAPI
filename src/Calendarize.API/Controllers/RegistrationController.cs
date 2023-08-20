@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 namespace Calendarize.API.Controllers
 {
-    [ApiController]
     public class RegistrationController : BaseCalendarizeController
     {
         private readonly IMapper _mapper;

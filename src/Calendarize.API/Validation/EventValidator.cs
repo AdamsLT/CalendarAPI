@@ -1,4 +1,6 @@
-﻿using Calendarize.Core.Dto;
+﻿using Calendarize.Core.Constants;
+using Calendarize.Core.Dto;
+using Calendarize.Core.Extensions;
 using Calendarize.Core.Services;
 using FluentValidation;
 
@@ -15,48 +17,61 @@ namespace Calendarize.API.Validation
             _locationService = locationService;
 
             RuleFor(x => x.Capacity)
-                .NotEmpty()
-                .InclusiveBetween(1, 1000)
-                .WithState(x => "invalidCapacityAmount");
+                .InclusiveBetween(ValidationConstants.Event.MinCapacity, ValidationConstants.Event.MaxCapacity)
+                    .WithState(x => ValidationErrorStates.Required);
 
             RuleFor(x => x.Description)
-                .MaximumLength(500)
-                .WithState(x => "invalidDescriptionLength");
+                .MaximumLength(ValidationConstants.Event.MaxDescriptionLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength);
 
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .MinimumLength(5)
-                .MaximumLength(100)
-                .WithState(x => "invalidNameLength");
+                    .WithState(x => ValidationErrorStates.ValueEmpty)
+                .MinimumLength(ValidationConstants.Event.MinNameLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength)
+                .MaximumLength(ValidationConstants.Event.MaxNameLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength);
 
             RuleFor(x => x.Tags)
-                .Must(x => x.Count < 5)
-                .WithMessage("Cannot add more than 5 tags to event.")
-                .WithState(x => "invalidTagCount");
+                .Must(x => x.Count <= ValidationConstants.Event.MaxTagCount)
+                    .WithMessage(x => $"Maximum amount of tags is {ValidationConstants.Event.MaxTagCount}. You entered {x.Tags.Count}")
+                    .WithState(x => ValidationErrorStates.Event.InvalidTagCount);
 
             RuleFor(x => x.CoachId)
                 .NotEmpty()
-                .Must(IsValidUser)
-                .WithMessage(x => $"'CoachId' with value '{x.CoachId}' not found")
-                .WithState(x => "notFoundUserId");
+                .Must(x => x.IsValidBsonObjectId())
+                    .WithMessage(x => $"'{nameof(EventCreateDto.CoachId)}' is not a valid Id format")
+                    .WithState(x => ValidationErrorStates.ValueInvalidFormat)
+                .DependentRules(() => {
+                    RuleFor(x => x.CoachId)
+                        .Must(BeValidUser)
+                            .WithMessage(x => $"'{nameof(EventCreateDto.CoachId)}' with value {x.CoachId} not found")
+                            .WithState(x => ValidationErrorStates.EntityNotFound);
+                });
 
             RuleFor(x => x.LocationId)
                 .NotEmpty()
-                .Must(IsValidLocation)
-                .WithMessage(x => $"'LocationId' with value '{x.LocationId}' not found")
-                .WithState(x => "notFoundLocationId");
+                .Must(x => x.IsValidBsonObjectId())
+                    .WithMessage(x => $"'{nameof(EventCreateDto.LocationId)}' is not a valid Id format")
+                    .WithState(x => ValidationErrorStates.ValueInvalidFormat)
+                .DependentRules(() => {
+                    RuleFor(x => x.LocationId)
+                        .Must(BeValidLocation)
+                            .WithMessage(x => $"'{nameof(EventCreateDto.LocationId)}' with value {x.LocationId} not found")
+                            .WithState(x => ValidationErrorStates.EntityNotFound);
+                });
         }
 
-        private bool IsValidLocation(string locationId)
+        private bool BeValidLocation(string locationId)
         {
-            var location = _locationService.GetLocationAsync(locationId).Result;
-            return !(location is null);
+            var entity = _locationService.GetLocationAsync(locationId).Result;
+            return entity is not null;
         }
 
-        private bool IsValidUser(string userId)
+        private bool BeValidUser(string userId)
         {
-            var user = _userService.GetUserAsync(userId).Result;
-            return !(user is null);
+            var entity = _userService.GetUserAsync(userId).Result;
+            return entity is not null;
         }
     }
 }
