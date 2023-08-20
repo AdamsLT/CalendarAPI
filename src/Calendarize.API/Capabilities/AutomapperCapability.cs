@@ -2,8 +2,6 @@
 using Calendarize.Core.Dto;
 using Calendarize.Core.Entities;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Bson;
-using System;
 
 namespace Calendarize.API.Capabilities
 {
@@ -19,8 +17,6 @@ namespace Calendarize.API.Capabilities
     {
         public CustomMappingProfile() 
         {
-            CreateMap<string, ObjectId>().ConstructUsing(x => new ObjectId(x));
-
             CreateMap<EventCreateDto, Event>().ReverseMap();
             CreateMap<EventDto, Event>().ReverseMap();
             
