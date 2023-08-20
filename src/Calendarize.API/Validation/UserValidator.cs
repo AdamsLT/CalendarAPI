@@ -1,4 +1,5 @@
-﻿using Calendarize.Core.Dto;
+﻿using Calendarize.Core.Constants;
+using Calendarize.Core.Dto;
 using FluentValidation;
 
 namespace Calendarize.API.Validation
@@ -9,22 +10,33 @@ namespace Calendarize.API.Validation
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .MinimumLength(1)
-                .MaximumLength(100);
+                    .WithState(x => ValidationErrorStates.ValueEmpty)
+                .MinimumLength(ValidationConstants.User.MinNameLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength)
+                .MaximumLength(ValidationConstants.User.MaxNameLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength);
 
             RuleFor(x => x.Lastname)
                 .NotEmpty()
-                .MinimumLength(1)
-                .MaximumLength(100);
+                    .WithState(x => ValidationErrorStates.ValueEmpty)
+                .MinimumLength(ValidationConstants.User.MinLastnameLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength)
+                .MaximumLength(ValidationConstants.User.MaxLastnameLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength);
 
             RuleFor(x => x.Email)
                 .NotEmpty()
-                .EmailAddress();
+                    .WithState(x => ValidationErrorStates.ValueEmpty)
+                .EmailAddress()
+                    .WithState(x => ValidationErrorStates.ValueInvalidFormat);
 
             RuleFor(x => x.PhoneNumber)
                 .NotEmpty()
-                .MinimumLength(9)
-                .MaximumLength(12);
+                    .WithState(x => ValidationErrorStates.ValueEmpty)
+                .MinimumLength(ValidationConstants.User.MinPhoneNumberLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength)
+                .MaximumLength(ValidationConstants.User.MaxPhoneNumberLength)
+                    .WithState(x => ValidationErrorStates.ValueInvalidLength);
         }
     }
 }
